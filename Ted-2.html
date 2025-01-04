@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://ia902708.us.archive.org/16/items/sarp-generador-series-pelis/Sarp%20Generador%20SeriesPelis.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ted 2</title>
+<style>
+.post-header::before {
+content: "";
+color: white;
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.1)),
+url('https://image.tmdb.org/t/p/w300//bO59Vn36fQauTDQpKNlHxvcK9Nw.jpg');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+z-index: -1;
+}
+
+#favoritoBtn {
+Font-weight;700;
+color:white;
+font-size:20px;
+background:rgba(0, 0, 0,.5);
+padding:10px;
+border: 2px solid white;
+border-radius:12px;
+}
+
+#favoritoBtn:hover{background:rgba(121, 121, 255,.5);}
+
+.Trsa {
+Font-weight;700;
+color:white;
+font-size:16px;
+background:rgba(0, 0, 0,.5);
+padding:05px 10px;
+border: 2px solid white;
+border-radius:12px;
+}
+
+.Trsa:hover {background:rgba(0, 255, 0,.5);}
+
+</style>
+
+</head>
+<body>
+<div class="post-header">
+<div class="image-and-btn">
+<img src="https://image.tmdb.org/t/p/w300//bO59Vn36fQauTDQpKNlHxvcK9Nw.jpg" class="poster-img" alt="" />
+
+<button id="favoritoBtn" data-identificador="" onclick="toggleFavorito()">Agregar a Favoritos</button>
+
+<div id="favoritoData" style="display: none;">
+<img id="favoritoImagen" class="poster" src="https://image.tmdb.org/t/p/w300//bO59Vn36fQauTDQpKNlHxvcK9Nw.jpg" alt="Poster de la Película">
+<a id="favoritoEnlace" href="go:"></a>
+<span id="nombre">Ted 2</span>
+</div>
+
+</div>
+
+<div class="post-header__info">
+<h1>Ted 2</h1>
+
+<a id="transmitButton" class="Trsa" href="#" data-intent="wvc-x-callback://open?url=&secure_uri=true" onclick="abrirApp()""> <i class="fas fa-tv"></i> Transmitir</a>
+
+<ul>
+<li class="tmdb-rate"><i class="far fa-star"></i> 6.3</li>
+<li>1h 55m</li>
+<li>2015</li>
+</ul>
+<p class="resume">Se trata de una secuela de la exitosa comedia escrita y dirigida por el cómico Seth MacFarlane. Recién casados Ted y Tami-Lynn deciden tener un bebé. John se ofrece en donar su esperma para que su mejor amigo pueda cumplir su sueño de tener un hijo, pero inesperadamente reciben una carta legal que dice que el estado no le permite ser padre ya que no está demostrado que sea una persona. Todos juntos tendrán que unir fuerzas para luchar por sus derechos en un tribunal de justicia.</p>
+<div class="more-data">
+<p>Generos: Comedia, Fantasía</p>
+</div>
+</div>
+</div>
+
+<!--SERVIDORES BOTONES-->
+
+<div class="server-buttons">
+<button onclick="changeVideo('https://play.cinehax.com/embed/blbwNmJ0EKQCkrXxqBGtIlfycoRPnV2s')">Server 1</button>
+<button onclick="changeVideo('https://play.cinehax.com/embed/blbwNmJ0EKQCkrXxqBGtIlfycoRPnV2s')">Server 2</button>
+<button onclick="changeVideo('https://play.cinehax.com/embed/blbwNmJ0EKQCkrXxqBGtIlfycoRPnV2s')">Server 3</button>
+</div><br>
+
+<!--- IFRAME VIDEO--->
+
+<center><div class="video-container">
+<iframe id="video-iframe" src="https://play.cinehax.com/embed/blbwNmJ0EKQCkrXxqBGtIlfycoRPnV2s" frameborder="0" allowfullscreen></iframe>
+</div></center>
+
+
+<br><br>
+</body>
+<script>
+var currentVideoUrl = '';
+var iframe = document.getElementById('video-iframe');
+
+function changeVideo(videoUrl) {
+if (videoUrl !== currentVideoUrl) {
+iframe.src = videoUrl;
+currentVideoUrl = videoUrl;
+}
+}
+
+// Manejar el evento al salir de la página
+window.addEventListener('beforeunload', function() {
+iframe.src = '';
+});
+
+// Manejar el evento al cerrar la página
+window.addEventListener('unload', function() {
+iframe.src = '';
+});
+</script>
+<script>
+const favoritoBtn = document.getElementById('favoritoBtn');
+const identificador = favoritoBtn.getAttribute('data-identificador');
+
+function toggleFavorito() {
+const favoritoEnlace = document.getElementById('favoritoEnlace');
+const imagen = document.getElementById('favoritoImagen');
+const nombre = document.getElementById('nombre').textContent; // Obtener el texto del span
+const favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+
+const encontrado = favoritos.some(favorito => favorito.identificador === identificador);
+
+if (encontrado) {
+const nuevosFavoritos = favoritos.filter(favorito => favorito.identificador !== identificador);
+favoritoBtn.textContent = 'Agregar a Favoritos';
+localStorage.setItem('favoritos', JSON.stringify(nuevosFavoritos));
+} else {
+favoritos.push({
+identificador: identificador,
+imagen: imagen.outerHTML,
+enlace: favoritoEnlace.href,
+nombre: nombre, // Agregar el nombre al objeto
+});
+
+favoritoBtn.textContent = 'Borrar de Favoritos';
+localStorage.setItem('favoritos', JSON.stringify(favoritos));
+}
+}
+
+const favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+const encontradoInicial = favoritos.some(favorito => favorito.identificador === identificador);
+
+if (encontradoInicial) {
+favoritoBtn.textContent = 'Borrar de Favoritos';
+} else {
+favoritoBtn.textContent = 'Agregar a Favoritos';
+}
+</script>
+<script>
+function abrirApp() {
+var intentUrl = document.getElementById("transmitButton").getAttribute("data-intent");
+
+// Crear un elemento "iframe" oculto para intentar abrir la URL personalizada
+var iframe = document.createElement("iframe");
+iframe.style.display = "none";
+iframe.src = intentUrl;
+document.body.appendChild(iframe);
+
+// Esperar un tiempo breve y redirigir al enlace si el intent no se ejecutó
+setTimeout(function() {
+document.body.removeChild(iframe);
+window.location.href = "#"; // Redirige al enlace original
+}, 3000); // Espera 3 segundos antes de redirigir (ajusta según necesites)
+}
+</script>
+
+</html>
